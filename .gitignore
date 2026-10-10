@@ -1,0 +1,16 @@
+# Build
+bin/
+obj/
+*.user
+.vs/
+.vscode/
+.idea/
+
+# Segredos e configuração local
+.env
+appsettings.*.local.json
+
+# Sistema
+Thumbs.db
+.DS_Store
+desktop.ini

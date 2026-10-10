@@ -1,0 +1,70 @@
+@host = http://localhost:5131
+
+### Catálogo da loja
+GET {{host}}/api/jogos
+
+### Login de cliente (conta de demonstração)
+# @name loginCliente
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "jogador@exemplo.com",
+  "senha": "Jogador@123"
+}
+
+### Chamados do cliente logado
+GET {{host}}/api/chamados/meus
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+
+### Abrir chamado
+POST {{host}}/api/chamados
+Authorization: Bearer {{loginCliente.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "assunto": "Não consigo baixar o jogo",
+  "descricao": "O download para em 45% e não avança mais."
+}
+
+### Login de funcionário (conta de demonstração)
+# @name loginFuncionario
+POST {{host}}/api/auth/funcionarios/login
+Content-Type: application/json
+
+{
+  "email": "suporte@heavengames.com",
+  "senha": "Suporte@123"
+}
+
+### Fila de chamados abertos
+GET {{host}}/api/chamados?status=Aberto
+Authorization: Bearer {{loginFuncionario.response.body.$.token}}
+
+### Responder chamado
+POST {{host}}/api/chamados/1/interacoes
+Authorization: Bearer {{loginFuncionario.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "mensagem": "Estamos verificando, obrigado pela paciência!"
+}
+
+### Alterar status
+PATCH {{host}}/api/chamados/1/status
+Authorization: Bearer {{loginFuncionario.response.body.$.token}}
+Content-Type: application/json
+
+{
+  "status": "Resolvido"
+}
+
+### Conversar com a IAjudinha
+POST {{host}}/api/chat
+Content-Type: application/json
+
+{
+  "mensagens": [
+    { "papel": "usuario", "texto": "Quais jogos de terror vocês têm?" }
+  ]
+}
