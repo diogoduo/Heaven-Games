@@ -1,0 +1,30 @@
+// Ambiente do GitHub Codespaces: sobe o SQL Server e a API com o mesmo docker-compose.yml do README.
+{
+    "name": "Heaven Games",
+    // Versão fixa: a tag "ubuntu" passou a apontar para o 26.04, ainda sem suporte do docker-in-docker.
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    // O SQL Server precisa de pelo menos 2 GB de memória livres.
+    "hostRequirements": {
+        "cpus": 2,
+        "memory": "8gb"
+    },
+    "postCreateCommand": "bash .devcontainer/preparar-env.sh",
+    "postStartCommand": "docker compose up -d --build",
+    "forwardPorts": [8080],
+    "portsAttributes": {
+        "8080": {
+            "label": "Heaven Games",
+            "onAutoForward": "openBrowser"
+        }
+    },
+    // Sugerido na criação do Codespace. Sem ele, o site funciona, mas a IAjudinha não responde perguntas.
+    "secrets": {
+        "GEMINI_API_KEY": {
+            "description": "Chave da API do Gemini, usada pela IAjudinha (opcional).",
+            "documentationUrl": "https://aistudio.google.com/apikey"
+        }
+    }
+}

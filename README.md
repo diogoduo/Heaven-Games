@@ -31,7 +31,19 @@ Loja de jogos fictícia com uma central de suporte completa: a **IAjudinha**, um
 
 ## Como rodar
 
-### Opção 1: Docker (recomendado)
+### Opção 1: GitHub Codespaces (sem instalar nada)
+
+[![Abrir no GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/diogoduo/Heaven-Games?quickstart=1)
+
+1. Clique no botão acima e depois em **Create codespace**. Se você já criou um antes, o mesmo link oferece retomá-lo.
+2. Aguarde a preparação. Na primeira vez leva alguns minutos, porque as imagens do SQL Server e da API são baixadas e montadas.
+3. O site abre sozinho numa nova aba. Se não abrir, vá na aba **Portas** (Ports) do editor e clique no globo ao lado da porta **8080**. Se aparecer um erro logo no início, aguarde alguns segundos e recarregue: a API ainda está criando o banco.
+
+As senhas são geradas automaticamente no primeiro uso. Para a IAjudinha responder, cadastre a chave do Gemini como secret do Codespaces em [github.com/settings/codespaces](https://github.com/settings/codespaces) → **New secret**, com o nome `GEMINI_API_KEY` e acesso a este repositório. Se o Codespace já estiver aberto, reinicie-o para aplicar.
+
+Para voltar depois, acesse [github.com/codespaces](https://github.com/codespaces) e abra o Codespace existente: os dados ficam salvos. Ele desliga sozinho após 30 minutos sem uso, e o plano gratuito do GitHub inclui cerca de 60 horas por mês. O link do site é privado; para mostrar a outra pessoa, mude a visibilidade da porta 8080 para **Public** na aba Portas.
+
+### Opção 2: Docker
 
 Pré-requisito: [Docker Desktop](https://www.docker.com/products/docker-desktop/).
 
@@ -45,7 +57,7 @@ docker compose up --build
 
 O banco é criado automaticamente na primeira execução (migrations + dados de demonstração).
 
-### Opção 2: `dotnet run` (desenvolvimento)
+### Opção 3: `dotnet run` (desenvolvimento)
 
 Pré-requisitos: [.NET 10 SDK](https://dotnet.microsoft.com/download) e Docker (apenas para o SQL Server).
 
@@ -73,7 +85,7 @@ Elas são criadas na primeira execução junto com alguns chamados de exemplo. P
 ### Ativando a IA
 
 1. Gere uma chave gratuita em [Google AI Studio](https://aistudio.google.com/apikey).
-2. Docker: preencha `GEMINI_API_KEY` no `.env` e rode `docker compose up -d` de novo. Com `dotnet run`: use o `user-secrets` mostrado acima.
+2. Codespaces: cadastre o secret `GEMINI_API_KEY`, como explicado na opção 1. Docker: preencha `GEMINI_API_KEY` no `.env` e rode `docker compose up -d` de novo. Com `dotnet run`: use o `user-secrets` mostrado acima.
 
 Sem a chave, o chat continua abrindo chamados e avisa que as respostas com IA estão desativadas. O modelo pode ser trocado em `Gemini:Modelo` (no Docker, pela variável `GEMINI_MODELO` do `.env`). O padrão é `gemini-flash-lite-latest`, que responde em cerca de 1 segundo; o `gemini-flash-latest` é mais capaz, mas chegou a levar mais de 30 segundos e a recusar pedidos por sobrecarga. `Gemini:NivelRaciocinio` (padrão `low`) limita quanto o modelo "pensa" antes de responder, e `Gemini:UsarBuscaGoogle` permite que a IA consulte a web.
 
@@ -100,6 +112,7 @@ O arquivo [`IAjudinhaApi.http`](IAjudinhaApi/IAjudinhaApi.http) traz exemplos pr
 ## Estrutura
 
 ```
+├── .devcontainer/              # configuração do GitHub Codespaces
 ├── docker-compose.yml          # SQL Server + API
 ├── .env.example                # variáveis de ambiente (copie para .env)
 └── IAjudinhaApi/
@@ -131,6 +144,6 @@ O arquivo [`IAjudinhaApi.http`](IAjudinhaApi/IAjudinhaApi.http) traz exemplos pr
 - Testes automatizados (xUnit + `WebApplicationFactory`).
 - Gerar o CSS do Tailwind no build em vez de usar o CDN.
 - Notificar o cliente por e-mail quando a equipe responder.
-- Publicar uma demonstração online.
+- Hospedagem permanente, com link fixo sempre no ar (hoje a demonstração online roda pelo Codespaces).
 
 <!-- Autor: adicione aqui seu nome, LinkedIn e GitHub. -->
