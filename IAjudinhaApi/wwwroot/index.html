@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" style="color-scheme: dark">
 
 <head>
     <meta charset="UTF-8">
@@ -7,6 +7,7 @@
     <title>Heaven Games · Loja de jogos com suporte inteligente</title>
     <meta name="description"
         content="Heaven Games: loja de jogos inclusiva com a IAjudinha, assistente virtual que tira dúvidas e abre chamados de suporte.">
+    <meta name="theme-color" content="#002147">
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,8 +22,9 @@
                     colors: {
                         'primary': '#002147',   // Azul marinho
                         'secondary': '#b4b4b4', // Prata
-                        'dark-bg': '#0a0a0a',
-                        'card-bg': '#1a1a1a',
+                        'ia': '#5aa9ff',        // Azul de destaque da IAjudinha
+                        'dark-bg': '#060a13',
+                        'card-bg': '#0f1624',
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -43,34 +45,34 @@
     <style type="text/tailwindcss">
         @layer components {
             .btn-primario {
-                @apply inline-flex items-center justify-center gap-2 rounded-lg bg-secondary px-4 py-2.5 text-sm font-bold text-primary shadow-md transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-not-allowed disabled:opacity-60;
+                @apply inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-2.5 text-sm font-bold text-primary shadow-lg shadow-black/30 transition hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-not-allowed disabled:opacity-60;
             }
             .btn-secundario {
-                @apply inline-flex items-center justify-center gap-2 rounded-lg border border-secondary/60 px-4 py-2.5 text-sm font-semibold text-secondary transition hover:bg-secondary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-not-allowed disabled:opacity-60;
+                @apply inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.03] px-4 py-2.5 text-sm font-semibold text-gray-100 transition hover:border-secondary hover:bg-secondary hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-secondary disabled:cursor-not-allowed disabled:opacity-60;
             }
             .btn-fantasma {
                 @apply rounded-lg px-3 py-2 text-sm font-medium text-secondary transition hover:bg-white/5 hover:text-white;
             }
             .link-nav {
-                @apply rounded-md px-3 py-1.5 text-sm font-medium text-secondary transition hover:text-white;
+                @apply rounded-lg px-3 py-1.5 text-sm font-medium text-secondary transition hover:bg-white/5 hover:text-white;
             }
             .link-nav[aria-current="page"] {
-                @apply bg-secondary/15 text-white;
+                @apply bg-white/10 text-white;
             }
             .chip {
-                @apply rounded-full border border-secondary/30 px-3 py-1 text-sm text-secondary transition hover:border-secondary hover:text-white;
+                @apply shrink-0 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-3.5 py-1.5 text-sm text-secondary transition hover:border-secondary/60 hover:text-white;
             }
             .chip[aria-current="true"] {
-                @apply border-secondary bg-secondary text-primary font-semibold;
+                @apply border-secondary bg-secondary font-semibold text-primary;
             }
             .campo {
-                @apply w-full rounded-lg border border-primary bg-dark-bg px-4 py-2.5 text-white placeholder-gray-500 focus:border-secondary focus:outline-none focus:ring-2 focus:ring-secondary/40;
+                @apply w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-white placeholder-gray-500 transition focus:border-secondary/70 focus:outline-none focus:ring-2 focus:ring-secondary/25;
             }
             .rotulo {
-                @apply mb-1 block text-sm font-medium text-secondary;
+                @apply mb-1.5 block text-sm font-medium text-gray-300;
             }
             .cartao {
-                @apply rounded-xl bg-card-bg shadow-lg ring-1 ring-white/5;
+                @apply rounded-2xl bg-card-bg shadow-lg shadow-black/20 ring-1 ring-white/[0.07];
             }
             .erro-form {
                 @apply rounded-lg border border-red-500/40 bg-red-500/10 px-3 py-2 text-sm text-red-300;
@@ -79,39 +81,74 @@
                 @apply fixed inset-0 z-[100] items-center justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm;
             }
             .modal-conteudo {
-                @apply relative w-full max-w-md animate-surgir rounded-2xl border border-secondary/30 bg-card-bg p-6 shadow-2xl sm:p-8;
+                @apply relative w-full max-w-md animate-surgir rounded-2xl bg-card-bg p-6 shadow-2xl ring-1 ring-white/10 sm:p-8;
             }
             .botao-fechar {
                 @apply absolute right-4 top-4 rounded-full p-2 text-secondary transition hover:bg-white/5 hover:text-white;
             }
             .dica-demo {
-                @apply mt-4 rounded-lg border border-dashed border-secondary/30 px-3 py-2 text-xs text-gray-400;
+                @apply mt-4 rounded-lg border border-dashed border-white/15 px-3 py-2 text-xs text-gray-400;
+            }
+            .sobretitulo {
+                @apply text-xs font-semibold uppercase tracking-[0.18em] text-ia;
+            }
+            .icone-caixa {
+                @apply grid h-11 w-11 place-items-center rounded-xl bg-white/[0.05] text-ia ring-1 ring-white/10;
             }
         }
     </style>
     <style>
-        .rolagem-fina::-webkit-scrollbar { width: 6px; }
-        .rolagem-fina::-webkit-scrollbar-thumb { background: #002147; border-radius: 3px; }
-        .rolagem-fina::-webkit-scrollbar-track { background: #2a2a2a; }
+        body {
+            background:
+                radial-gradient(1100px 520px at 85% -8%, rgba(0, 72, 160, .28), transparent 60%),
+                radial-gradient(800px 420px at -10% 10%, rgba(90, 169, 255, .08), transparent 60%),
+                #060a13;
+        }
+        .rolagem-fina { scrollbar-width: thin; scrollbar-color: #24324a transparent; }
+        .rolagem-fina::-webkit-scrollbar { width: 6px; height: 6px; }
+        .rolagem-fina::-webkit-scrollbar-thumb { background: #24324a; border-radius: 3px; }
+        .rolagem-fina::-webkit-scrollbar-track { background: transparent; }
+        .sem-rolagem { scrollbar-width: none; }
+        .sem-rolagem::-webkit-scrollbar { display: none; }
         .toast { transition: opacity .3s; }
+        summary::-webkit-details-marker { display: none; }
+        /* A lista de opções herda o fundo do select; como os campos têm fundo translúcido,
+           sem isto o Chrome no Windows mostra texto branco sobre fundo branco. */
+        select.campo option { background-color: #0f1624; color: #f3f4f6; }
+        /* Botão flutuante do chat: troca o ícone conforme a janela está aberta ou fechada. */
+        #chat-botao[aria-expanded="true"] .so-fechado,
+        #chat-botao[aria-expanded="false"] .so-aberto { display: none; }
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        }
     </style>
 
     <script type="module" src="js/main.js"></script>
 </head>
 
-<body class="min-h-screen bg-dark-bg font-sans text-gray-100">
+<body class="min-h-screen font-sans text-gray-100 antialiased">
     <a href="#conteudo"
         class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-lg focus:bg-secondary focus:px-4 focus:py-2 focus:text-primary">
         Pular para o conteúdo
     </a>
 
     <!-- Cabeçalho -->
-    <header class="sticky top-0 z-50 bg-primary shadow-lg">
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-primary/85 shadow-lg shadow-black/20 backdrop-blur-md">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 items-center justify-between gap-4">
                 <div class="flex items-center gap-6">
-                    <a href="#/" class="flex-shrink-0 text-lg font-extrabold uppercase tracking-widest text-secondary">
-                        Heaven Games
+                    <a href="#/" class="flex flex-shrink-0 items-center gap-2.5" aria-label="Heaven Games, página inicial">
+                        <span class="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-white to-secondary text-primary shadow-md">
+                            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <line x1="6" x2="10" y1="11" y2="11" /><line x1="8" x2="8" y1="9" y2="13" />
+                                <line x1="15" x2="15.01" y1="12" y2="12" /><line x1="18" x2="18.01" y1="10" y2="10" />
+                                <path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z" />
+                            </svg>
+                        </span>
+                        <span class="text-sm font-extrabold uppercase tracking-[0.2em] text-white sm:text-base">
+                            Heaven <span class="text-secondary">Games</span>
+                        </span>
                     </a>
                     <nav class="hidden items-center gap-1 md:flex" aria-label="Principal">
                         <a href="#/" class="link-nav" data-nav="inicio">Início</a>
@@ -122,7 +159,7 @@
 
                 <div id="area-usuario" class="hidden items-center gap-2 md:flex"></div>
 
-                <button type="button" class="rounded-md p-2 text-secondary hover:text-white md:hidden"
+                <button type="button" class="rounded-lg p-2 text-secondary hover:bg-white/5 hover:text-white md:hidden"
                     data-acao="menu-mobile" aria-controls="menu-mobile" aria-expanded="false" aria-label="Abrir menu">
                     <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -142,106 +179,233 @@
         </div>
 
         <!-- Categorias (desktop) -->
-        <div class="hidden border-t border-white/10 bg-dark-bg/50 md:block">
-            <nav class="mx-auto flex max-w-7xl justify-center gap-6 px-4 py-2 text-sm sm:px-6 lg:px-8"
+        <div class="hidden border-t border-white/[0.06] bg-black/20 md:block">
+            <nav class="sem-rolagem mx-auto flex max-w-7xl justify-center gap-1 overflow-x-auto px-4 py-1.5 text-sm sm:px-6 lg:px-8"
                 aria-label="Categorias">
-                <a href="#/loja/A%C3%A7%C3%A3o" class="font-medium text-white transition hover:text-secondary">Ação</a>
-                <a href="#/loja/Aventura" class="font-medium text-white transition hover:text-secondary">Aventura</a>
-                <a href="#/loja/Terror" class="font-medium text-white transition hover:text-secondary">Terror</a>
-                <a href="#/loja/Simula%C3%A7%C3%A3o" class="font-medium text-white transition hover:text-secondary">Simulação</a>
-                <a href="#/loja/Estrat%C3%A9gia" class="font-medium text-white transition hover:text-secondary">Estratégia</a>
-                <a href="#/loja/RPG" class="font-medium text-white transition hover:text-secondary">RPG</a>
-                <a href="#/loja/Esporte" class="font-medium text-white transition hover:text-secondary">Esporte</a>
-                <a href="#/loja/Indie" class="font-medium text-white transition hover:text-secondary">Indie</a>
-                <a href="#/loja/VR" class="font-medium text-white transition hover:text-secondary">VR</a>
+                <a href="#/loja/A%C3%A7%C3%A3o" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Ação</a>
+                <a href="#/loja/Aventura" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Aventura</a>
+                <a href="#/loja/Terror" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Terror</a>
+                <a href="#/loja/Simula%C3%A7%C3%A3o" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Simulação</a>
+                <a href="#/loja/Estrat%C3%A9gia" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Estratégia</a>
+                <a href="#/loja/RPG" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">RPG</a>
+                <a href="#/loja/Esporte" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Esporte</a>
+                <a href="#/loja/Indie" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">Indie</a>
+                <a href="#/loja/VR" class="rounded-md px-3 py-1 font-medium text-secondary transition hover:bg-white/5 hover:text-white">VR</a>
             </nav>
         </div>
     </header>
 
-    <main id="conteudo" tabindex="-1" class="mx-auto max-w-7xl px-4 py-10 outline-none sm:px-6 lg:px-8">
+    <main id="conteudo" tabindex="-1" class="mx-auto max-w-7xl px-4 py-8 outline-none sm:px-6 sm:py-10 lg:px-8">
 
         <!-- Início -->
         <section data-pagina="inicio">
-            <div
-                class="relative mb-12 overflow-hidden rounded-2xl bg-gradient-to-br from-primary via-[#0b1b33] to-dark-bg px-6 py-12 ring-1 ring-white/10 sm:px-12 sm:py-16">
-                <p class="text-xs font-semibold uppercase tracking-[0.2em] text-secondary/80">Plataforma inclusiva de jogos</p>
-                <h1 class="mt-3 max-w-2xl text-3xl font-extrabold text-white sm:text-5xl">Onde a diversidade cria mundos épicos.</h1>
-                <p class="mt-4 max-w-xl text-secondary">
-                    Explore o catálogo e conte com a IAjudinha, nossa assistente virtual, para tirar dúvidas e
-                    abrir chamados com a equipe de suporte.
-                </p>
-                <div class="mt-8 flex flex-wrap gap-3">
-                    <a href="#/loja" class="btn-primario">Explorar a loja</a>
-                    <button type="button" class="btn-secundario" data-acao="abrir-chat">Falar com a IAjudinha</button>
+            <div class="relative mb-14 overflow-hidden rounded-3xl bg-gradient-to-br from-primary via-[#04162f] to-dark-bg ring-1 ring-white/10">
+                <div class="pointer-events-none absolute -right-20 -top-28 h-96 w-96 rounded-full bg-ia/20 blur-3xl" aria-hidden="true"></div>
+                <div class="relative grid items-center gap-10 px-6 py-12 sm:px-12 sm:py-16 lg:grid-cols-[1.15fr_1fr]">
+                    <div>
+                        <p class="inline-flex items-center gap-2 rounded-full bg-white/5 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-secondary ring-1 ring-white/10 sm:text-xs sm:tracking-[0.18em]">
+                            <span class="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true"></span>
+                            Plataforma inclusiva de jogos
+                        </p>
+                        <h1 class="mt-5 max-w-2xl text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
+                            Onde a diversidade cria
+                            <span class="bg-gradient-to-r from-white via-[#cfe3ff] to-ia bg-clip-text text-transparent">mundos épicos.</span>
+                        </h1>
+                        <p class="mt-5 max-w-xl text-base leading-relaxed text-secondary sm:text-lg">
+                            Explore o catálogo e conte com a IAjudinha, nossa assistente virtual, para tirar dúvidas e
+                            abrir chamados com a equipe de suporte.
+                        </p>
+                        <div class="mt-8 flex flex-wrap gap-3">
+                            <a href="#/loja" class="btn-primario px-5 py-3 text-base">
+                                Explorar a loja
+                                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            </a>
+                            <button type="button" class="btn-secundario px-5 py-3 text-base" data-acao="abrir-chat">
+                                <svg class="h-4 w-4 text-ia" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+                                </svg>
+                                Falar com a IAjudinha
+                            </button>
+                        </div>
+                        <dl class="mt-10 grid max-w-md grid-cols-3 gap-4 border-t border-white/10 pt-6">
+                            <div class="flex flex-col-reverse justify-end">
+                                <dt class="mt-1 text-xs text-gray-400">jogos no catálogo</dt>
+                                <dd id="total-jogos" class="text-2xl font-bold text-white">—</dd>
+                            </div>
+                            <div class="flex flex-col-reverse justify-end">
+                                <dt class="mt-1 text-xs text-gray-400">categorias</dt>
+                                <dd class="text-2xl font-bold text-white">9</dd>
+                            </div>
+                            <div class="flex flex-col-reverse justify-end">
+                                <dt class="mt-1 text-xs text-gray-400">de suporte com IA</dt>
+                                <dd class="text-2xl font-bold text-white">24h</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <!-- Ilustração: capas em leque e uma prévia da conversa com a IAjudinha -->
+                    <div class="relative hidden h-[23rem] lg:block" aria-hidden="true">
+                        <div class="absolute left-1/2 top-6 w-40 -translate-x-[118%] rotate-[-9deg] overflow-hidden rounded-2xl shadow-2xl shadow-black/60 ring-1 ring-white/15">
+                            <img src="img/jogos/green-hell.jpg" alt="" class="aspect-[3/4] w-full object-cover">
+                        </div>
+                        <div class="absolute left-1/2 top-6 w-40 translate-x-[18%] rotate-[9deg] overflow-hidden rounded-2xl shadow-2xl shadow-black/60 ring-1 ring-white/15">
+                            <img src="img/jogos/slender-the-arrival.jpg" alt="" class="aspect-[3/4] w-full object-cover">
+                        </div>
+                        <div class="absolute left-1/2 top-0 z-10 w-44 -translate-x-1/2 overflow-hidden rounded-2xl shadow-2xl shadow-black/70 ring-1 ring-white/20">
+                            <img src="img/jogos/red-dead-redemption-2.webp" alt="" class="aspect-[3/4] w-full object-cover">
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-6 z-20 space-y-2.5 rounded-2xl bg-card-bg/90 p-4 shadow-2xl shadow-black/60 ring-1 ring-white/10 backdrop-blur">
+                            <div class="flex justify-end">
+                                <p class="rounded-2xl rounded-br-md bg-primary px-3.5 py-2 text-sm text-white ring-1 ring-white/10">Quais jogos de terror vocês têm?</p>
+                            </div>
+                            <div class="flex items-end gap-2">
+                                <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-gradient-to-br from-ia to-primary text-white">
+                                    <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+                                    </svg>
+                                </span>
+                                <p class="rounded-2xl rounded-bl-md bg-white/[0.07] px-3.5 py-2 text-sm text-gray-100">
+                                    Temos <strong>Slender: The Arrival</strong> (R$ 119,99) e <strong>Pacify</strong> (R$ 109,90). Quer que eu compare os dois?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="mb-6 flex flex-wrap items-end justify-between gap-2 border-b border-secondary/30 pb-2">
-                <h2 class="text-2xl font-bold text-secondary">Em destaque · Vozes na tecnologia</h2>
-                <a href="#/loja" class="text-sm text-secondary/80 hover:text-white">Ver catálogo completo →</a>
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-3">
+                <div>
+                    <p class="sobretitulo">Em destaque</p>
+                    <h2 class="mt-1 text-2xl font-bold text-white sm:text-3xl">Vozes na tecnologia</h2>
+                </div>
+                <a href="#/loja" class="group inline-flex items-center gap-1 text-sm font-medium text-secondary transition hover:text-white">
+                    Ver catálogo completo
+                    <svg class="h-4 w-4 transition group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                </a>
             </div>
             <div id="grid-destaques" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-                <div class="h-60 animate-pulse rounded-xl bg-card-bg"></div>
-                <div class="h-60 animate-pulse rounded-xl bg-card-bg"></div>
-                <div class="h-60 animate-pulse rounded-xl bg-card-bg"></div>
-                <div class="hidden h-60 animate-pulse rounded-xl bg-card-bg sm:block"></div>
-                <div class="hidden h-60 animate-pulse rounded-xl bg-card-bg lg:block"></div>
-                <div class="hidden h-60 animate-pulse rounded-xl bg-card-bg lg:block"></div>
+                <div class="aspect-[3/5] animate-pulse rounded-2xl bg-card-bg"></div>
+                <div class="aspect-[3/5] animate-pulse rounded-2xl bg-card-bg"></div>
+                <div class="aspect-[3/5] animate-pulse rounded-2xl bg-card-bg"></div>
+                <div class="hidden aspect-[3/5] animate-pulse rounded-2xl bg-card-bg sm:block"></div>
+                <div class="hidden aspect-[3/5] animate-pulse rounded-2xl bg-card-bg lg:block"></div>
+                <div class="hidden aspect-[3/5] animate-pulse rounded-2xl bg-card-bg lg:block"></div>
             </div>
 
-            <div class="mt-14 grid gap-4 md:grid-cols-3">
+            <div class="mt-16 grid gap-4 md:grid-cols-3">
                 <div class="cartao p-6">
-                    <p class="text-2xl" aria-hidden="true">🤖</p>
-                    <h3 class="mt-2 font-semibold text-white">IAjudinha 24h</h3>
-                    <p class="mt-1 text-sm text-gray-400">Assistente com IA que conhece o catálogo e responde na hora.</p>
+                    <span class="icone-caixa">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+                            <path d="M20 3v4" /><path d="M22 5h-4" />
+                        </svg>
+                    </span>
+                    <h3 class="mt-4 font-semibold text-white">IAjudinha 24h</h3>
+                    <p class="mt-1 text-sm leading-relaxed text-gray-400">Assistente com IA que conhece o catálogo e responde na hora.</p>
                 </div>
                 <div class="cartao p-6">
-                    <p class="text-2xl" aria-hidden="true">🎫</p>
-                    <h3 class="mt-2 font-semibold text-white">Chamados acompanhados</h3>
-                    <p class="mt-1 text-sm text-gray-400">Abra um chamado pelo chat ou pelo site e converse com a equipe.</p>
+                    <span class="icone-caixa">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z" />
+                            <path d="M13 5v2" /><path d="M13 17v2" /><path d="M13 11v2" />
+                        </svg>
+                    </span>
+                    <h3 class="mt-4 font-semibold text-white">Chamados acompanhados</h3>
+                    <p class="mt-1 text-sm leading-relaxed text-gray-400">Abra um chamado pelo chat ou pelo site e converse com a equipe.</p>
                 </div>
                 <div class="cartao p-6">
-                    <p class="text-2xl" aria-hidden="true">🌈</p>
-                    <h3 class="mt-2 font-semibold text-white">Feita para todo mundo</h3>
-                    <p class="mt-1 text-sm text-gray-400">Navegação por teclado, contraste alto e linguagem acessível.</p>
+                    <span class="icone-caixa">
+                        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="16" cy="4" r="1" /><path d="m18 19 1-7-6 1" /><path d="m5 8 3-3 5.5 3-2.36 3.5" />
+                            <path d="M4.24 14.5a5 5 0 0 0 6.88 6" /><path d="M13.76 17.5a5 5 0 0 0-6.88-6" />
+                        </svg>
+                    </span>
+                    <h3 class="mt-4 font-semibold text-white">Feita para todo mundo</h3>
+                    <p class="mt-1 text-sm leading-relaxed text-gray-400">Navegação por teclado, contraste alto e linguagem acessível.</p>
                 </div>
             </div>
         </section>
 
         <!-- Loja -->
         <section data-pagina="loja" hidden>
-            <h1 id="titulo-loja" class="mb-4 text-3xl font-bold text-secondary">Todos os jogos</h1>
-            <nav id="filtros-loja" class="mb-6 flex flex-wrap gap-2" aria-label="Filtrar por categoria"></nav>
-            <div id="grid-loja" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6"></div>
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <p class="sobretitulo">Catálogo</p>
+                    <h1 id="titulo-loja" class="mt-1 text-3xl font-bold text-white">Todos os jogos</h1>
+                    <p id="contador-loja" class="mt-1 text-sm text-gray-400" aria-live="polite"></p>
+                </div>
+                <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+                    <div class="relative sm:w-64">
+                        <svg class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+                        </svg>
+                        <label for="busca-loja" class="sr-only">Buscar jogo</label>
+                        <input id="busca-loja" type="search" class="campo pl-10" placeholder="Buscar jogo ou gênero" autocomplete="off">
+                    </div>
+                    <label for="ordem-loja" class="sr-only">Ordenar</label>
+                    <select id="ordem-loja" class="campo sm:w-48">
+                        <option value="destaques">Em destaque</option>
+                        <option value="menor-preco">Menor preço</option>
+                        <option value="maior-preco">Maior preço</option>
+                        <option value="nome">Nome (A–Z)</option>
+                    </select>
+                </div>
+            </div>
+            <nav id="filtros-loja" class="sem-rolagem -mx-4 mb-6 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:px-0"
+                aria-label="Filtrar por categoria"></nav>
+            <div id="grid-loja" class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6"></div>
         </section>
 
         <!-- Suporte -->
         <section data-pagina="suporte" hidden>
             <div class="mx-auto mb-10 max-w-3xl text-center">
-                <h1 class="text-4xl font-extrabold text-white sm:text-5xl">Central de Ajuda</h1>
+                <p class="sobretitulo">Suporte</p>
+                <h1 class="mt-2 text-4xl font-extrabold tracking-tight text-white sm:text-5xl">Central de Ajuda</h1>
                 <p class="mt-4 text-lg text-secondary">Estamos aqui para ajudar, seja você jogador ou parte da nossa equipe.</p>
             </div>
 
             <!-- Visitante -->
             <div id="suporte-visitante" class="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
-                <div class="cartao border-2 border-primary p-8 text-center transition hover:border-secondary">
-                    <p class="text-4xl" aria-hidden="true">🎮</p>
-                    <h2 class="mt-3 text-2xl font-semibold text-white">Suporte ao jogador</h2>
-                    <p class="mb-6 mt-2 text-gray-400">Dúvidas sobre jogos, compras, conta ou problemas técnicos. Entre para abrir e acompanhar chamados.</p>
+                <div class="cartao flex flex-col p-8 transition hover:ring-secondary/40">
+                    <span class="icone-caixa h-12 w-12">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" />
+                        </svg>
+                    </span>
+                    <h2 class="mt-5 text-2xl font-semibold text-white">Suporte ao jogador</h2>
+                    <p class="mb-6 mt-2 flex-1 text-gray-400">Dúvidas sobre jogos, compras, conta ou problemas técnicos. Entre para abrir e acompanhar chamados.</p>
                     <button type="button" class="btn-primario w-full py-3 text-base" data-acao="abrir-modal" data-modal="modal-login">Acessar minha conta</button>
                 </div>
-                <div class="cartao border-2 border-primary p-8 text-center transition hover:border-secondary">
-                    <p class="text-4xl" aria-hidden="true">🛠️</p>
-                    <h2 class="mt-3 text-2xl font-semibold text-white">Acesso da equipe</h2>
-                    <p class="mb-6 mt-2 text-gray-400">Área restrita a funcionários para atender os chamados dos jogadores.</p>
+                <div class="cartao flex flex-col p-8 transition hover:ring-secondary/40">
+                    <span class="icone-caixa h-12 w-12">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                            <path d="m9 12 2 2 4-4" />
+                        </svg>
+                    </span>
+                    <h2 class="mt-5 text-2xl font-semibold text-white">Acesso da equipe</h2>
+                    <p class="mb-6 mt-2 flex-1 text-gray-400">Área restrita a funcionários para atender os chamados dos jogadores.</p>
                     <button type="button" class="btn-secundario w-full py-3 text-base" data-acao="abrir-modal" data-modal="modal-funcionario">Acesso funcionário</button>
                 </div>
             </div>
 
             <!-- Cliente logado -->
             <div id="suporte-cliente" class="mx-auto grid hidden max-w-5xl gap-6 lg:grid-cols-3">
-                <form id="form-chamado" class="cartao space-y-4 p-6 lg:col-span-2">
-                    <h2 class="text-xl font-semibold text-white">Abrir um chamado</h2>
+                <form id="form-chamado" class="cartao space-y-4 p-6 sm:p-8 lg:col-span-2">
+                    <div>
+                        <h2 class="text-xl font-semibold text-white">Abrir um chamado</h2>
+                        <p class="mt-1 text-sm text-gray-400">Quanto mais detalhes, mais rápido a equipe consegue ajudar.</p>
+                    </div>
                     <div>
                         <label for="chamado-assunto" class="rotulo">Assunto</label>
                         <input id="chamado-assunto" name="assunto" class="campo" required minlength="5" maxlength="200"
@@ -255,9 +419,9 @@
                     <p class="erro-form hidden" data-erro role="alert"></p>
                     <button type="submit" class="btn-primario" data-carregando="Enviando…">Enviar chamado</button>
                 </form>
-                <aside class="cartao space-y-4 p-6">
-                    <h2 class="font-semibold text-white">Olá, <span id="nome-cliente-suporte"></span>!</h2>
-                    <p class="text-sm text-gray-400">Você também pode abrir chamados conversando com a IAjudinha: é só digitar <strong class="text-secondary">"abrir chamado"</strong> no chat.</p>
+                <aside class="cartao flex flex-col gap-4 p-6">
+                    <h2 class="text-lg font-semibold text-white">Olá, <span id="nome-cliente-suporte"></span>!</h2>
+                    <p class="text-sm leading-relaxed text-gray-400">Você também pode abrir chamados conversando com a IAjudinha: é só digitar <strong class="text-secondary">"abrir chamado"</strong> no chat.</p>
                     <a href="#/meus-chamados" class="btn-secundario w-full">Ver meus chamados</a>
                     <button type="button" class="btn-fantasma w-full" data-acao="abrir-chat">Abrir o chat</button>
                 </aside>
@@ -274,23 +438,35 @@
 
             <!-- Perguntas frequentes -->
             <div id="faq" class="mx-auto mt-16 max-w-3xl scroll-mt-28">
-                <h2 class="mb-4 text-2xl font-bold text-secondary">Perguntas frequentes</h2>
+                <h2 class="mb-4 text-2xl font-bold text-white">Perguntas frequentes</h2>
                 <div class="space-y-3">
-                    <details class="cartao group p-4">
-                        <summary class="cursor-pointer font-medium text-white">Como acompanho meu chamado?</summary>
-                        <p class="mt-2 text-sm text-gray-400">Entre na sua conta e acesse <strong>Meus chamados</strong>. Lá você vê o status, as respostas da equipe e pode responder.</p>
+                    <details class="cartao group">
+                        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-medium text-white">
+                            Como acompanho meu chamado?
+                            <svg class="h-5 w-5 shrink-0 text-secondary transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </summary>
+                        <p class="px-5 pb-5 text-sm leading-relaxed text-gray-400">Entre na sua conta e acesse <strong>Meus chamados</strong>. Lá você vê o status, as respostas da equipe e pode responder.</p>
                     </details>
-                    <details class="cartao p-4">
-                        <summary class="cursor-pointer font-medium text-white">A IAjudinha resolve tudo sozinha?</summary>
-                        <p class="mt-2 text-sm text-gray-400">Ela responde dúvidas sobre o catálogo e a loja. Para casos que precisam de uma pessoa (cobrança, conta, erros persistentes), ela abre um chamado para a equipe.</p>
+                    <details class="cartao group">
+                        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-medium text-white">
+                            A IAjudinha resolve tudo sozinha?
+                            <svg class="h-5 w-5 shrink-0 text-secondary transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </summary>
+                        <p class="px-5 pb-5 text-sm leading-relaxed text-gray-400">Ela responde dúvidas sobre o catálogo e a loja. Para casos que precisam de uma pessoa (cobrança, conta, erros persistentes), ela abre um chamado para a equipe.</p>
                     </details>
-                    <details class="cartao p-4">
-                        <summary class="cursor-pointer font-medium text-white">Quanto tempo a equipe leva para responder?</summary>
-                        <p class="mt-2 text-sm text-gray-400">Normalmente em até 24 horas úteis. Você acompanha tudo pela página do chamado.</p>
+                    <details class="cartao group">
+                        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-medium text-white">
+                            Quanto tempo a equipe leva para responder?
+                            <svg class="h-5 w-5 shrink-0 text-secondary transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </summary>
+                        <p class="px-5 pb-5 text-sm leading-relaxed text-gray-400">Normalmente em até 24 horas úteis. Você acompanha tudo pela página do chamado.</p>
                     </details>
-                    <details class="cartao p-4">
-                        <summary class="cursor-pointer font-medium text-white">Meus dados estão seguros?</summary>
-                        <p class="mt-2 text-sm text-gray-400">As senhas são armazenadas com hash BCrypt e o acesso às áreas restritas usa tokens JWT com prazo de validade.</p>
+                    <details class="cartao group">
+                        <summary class="flex cursor-pointer list-none items-center justify-between gap-4 p-5 font-medium text-white">
+                            Meus dados estão seguros?
+                            <svg class="h-5 w-5 shrink-0 text-secondary transition group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </summary>
+                        <p class="px-5 pb-5 text-sm leading-relaxed text-gray-400">As senhas são armazenadas com hash BCrypt e o acesso às áreas restritas usa tokens JWT com prazo de validade.</p>
                     </details>
                 </div>
             </div>
@@ -298,8 +474,11 @@
 
         <!-- Meus chamados (cliente) -->
         <section data-pagina="meus-chamados" hidden>
-            <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
-                <h1 class="text-3xl font-bold text-secondary">Meus chamados</h1>
+            <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+                <div>
+                    <p class="sobretitulo">Suporte</p>
+                    <h1 class="mt-1 text-3xl font-bold text-white">Meus chamados</h1>
+                </div>
                 <a href="#/suporte" class="btn-primario">Novo chamado</a>
             </div>
             <div id="lista-meus-chamados" class="grid gap-3"></div>
@@ -307,7 +486,10 @@
 
         <!-- Painel de atendimento (funcionário) -->
         <section data-pagina="painel" hidden>
-            <h1 class="mb-6 text-3xl font-bold text-secondary">Painel de atendimento</h1>
+            <div class="mb-6">
+                <p class="sobretitulo">Equipe</p>
+                <h1 class="mt-1 text-3xl font-bold text-white">Painel de atendimento</h1>
+            </div>
             <div id="painel-resumo" class="mb-6 grid grid-cols-2 gap-4 lg:grid-cols-4"></div>
             <div class="mb-4 flex flex-col gap-3 sm:flex-row">
                 <label class="sr-only" for="filtro-status">Filtrar por status</label>
@@ -317,22 +499,28 @@
                     <option value="EmAndamento">Em andamento</option>
                     <option value="Resolvido">Resolvido</option>
                 </select>
-                <label class="sr-only" for="busca-chamado">Buscar chamado</label>
-                <input id="busca-chamado" type="search" class="campo" placeholder="Buscar por número, assunto ou cliente">
+                <div class="relative flex-1">
+                    <svg class="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
+                    </svg>
+                    <label class="sr-only" for="busca-chamado">Buscar chamado</label>
+                    <input id="busca-chamado" type="search" class="campo pl-10" placeholder="Buscar por número, assunto ou cliente">
+                </div>
             </div>
-            <div id="tabela-chamados" class="cartao overflow-x-auto"></div>
+            <div id="tabela-chamados" class="cartao rolagem-fina overflow-x-auto"></div>
         </section>
     </main>
 
     <!-- Rodapé -->
-    <footer class="mt-12 border-t border-secondary/30 bg-primary py-10 text-secondary">
+    <footer class="mt-16 border-t border-white/10 bg-primary/60 py-12 text-secondary">
         <div class="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-4 sm:px-6 md:grid-cols-4 lg:px-8">
             <div class="col-span-2 md:col-span-1">
-                <p class="mb-4 text-xl font-extrabold uppercase tracking-widest text-white">Heaven Games</p>
+                <p class="mb-3 text-lg font-extrabold uppercase tracking-[0.2em] text-white">Heaven <span class="text-secondary">Games</span></p>
                 <p class="text-sm text-secondary/80">Onde a diversidade cria mundos épicos.</p>
             </div>
             <div>
-                <p class="mb-4 text-lg font-semibold text-white">Navegação</p>
+                <p class="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Navegação</p>
                 <ul class="space-y-2 text-sm">
                     <li><a href="#/" class="hover:text-white">Início</a></li>
                     <li><a href="#/loja" class="hover:text-white">Loja</a></li>
@@ -340,7 +528,7 @@
                 </ul>
             </div>
             <div>
-                <p class="mb-4 text-lg font-semibold text-white">Suporte</p>
+                <p class="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Suporte</p>
                 <ul class="space-y-2 text-sm">
                     <li><a href="#/suporte" class="hover:text-white" data-acao="ir-faq">Perguntas frequentes</a></li>
                     <li><a href="#/meus-chamados" class="hover:text-white">Meus chamados</a></li>
@@ -348,53 +536,82 @@
                 </ul>
             </div>
             <div>
-                <p class="mb-4 text-lg font-semibold text-white">Projeto</p>
+                <p class="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Projeto</p>
                 <ul class="space-y-2 text-sm">
                     <li><a href="/scalar" class="hover:text-white">Documentação da API</a></li>
                 </ul>
             </div>
         </div>
-        <div class="mx-auto mt-8 max-w-7xl border-t border-secondary/20 px-4 pt-4 text-center text-xs text-gray-400 sm:px-6 lg:px-8">
+        <div class="mx-auto mt-10 max-w-7xl border-t border-white/10 px-4 pt-5 text-center text-xs text-gray-400 sm:px-6 lg:px-8">
             <p>&copy; <span id="ano"></span> Heaven Games · Projeto acadêmico (TCC). Loja fictícia: as capas dos jogos pertencem aos respectivos detentores.</p>
         </div>
     </footer>
 
     <!-- IAjudinha (chat flutuante) -->
-    <button id="chat-botao" type="button" data-acao="abrir-chat" aria-controls="chat-janela" aria-expanded="false"
+    <button id="chat-botao" type="button" data-acao="alternar-chat" aria-controls="chat-janela" aria-expanded="false"
         aria-label="Abrir chat com a IAjudinha"
-        class="fixed bottom-6 right-4 z-50 rounded-full bg-secondary p-4 text-primary shadow-2xl transition hover:bg-white sm:right-6">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        class="fixed bottom-5 right-4 z-50 flex items-center gap-2 rounded-full bg-secondary p-3.5 text-primary shadow-2xl shadow-black/60 ring-4 ring-white/10 transition hover:bg-white sm:right-6 sm:pr-5">
+        <svg class="so-fechado h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
             stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
         </svg>
+        <span class="so-fechado hidden text-sm font-bold sm:inline">Precisa de ajuda?</span>
+        <svg class="so-aberto h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18 6 6 18" /><path d="m6 6 12 12" />
+        </svg>
     </button>
 
-    <div id="chat-janela" role="dialog" aria-label="Chat com a IAjudinha"
-        class="fixed bottom-24 right-4 z-50 flex hidden h-[min(32rem,calc(100vh-8rem))] w-[calc(100vw-2rem)] flex-col rounded-xl border border-secondary/60 bg-card-bg shadow-2xl sm:right-6 sm:w-96">
-        <div class="flex items-center justify-between rounded-t-xl bg-primary px-4 py-3">
-            <div>
-                <p class="text-sm font-bold text-secondary">IAjudinha 🎮</p>
-                <p class="text-xs text-secondary/70">Assistente virtual da Heaven Games</p>
+    <section id="chat-janela" role="dialog" aria-labelledby="chat-titulo"
+        class="fixed inset-0 z-[60] flex hidden animate-surgir flex-col bg-card-bg sm:inset-auto sm:bottom-24 sm:right-6 sm:h-[min(38rem,calc(100vh-10rem))] sm:w-[25rem] sm:rounded-2xl sm:shadow-2xl sm:shadow-black/60 sm:ring-1 sm:ring-white/10">
+        <header class="flex items-center gap-3 border-b border-white/10 bg-gradient-to-r from-primary to-[#0a2d5c] px-4 py-3 sm:rounded-t-2xl">
+            <span class="relative grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-ia to-primary text-white ring-2 ring-white/15">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
+                    <path d="M20 3v4" /><path d="M22 5h-4" />
+                </svg>
+                <span class="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-emerald-400 ring-2 ring-primary" aria-hidden="true"></span>
+            </span>
+            <div class="min-w-0 flex-1">
+                <p id="chat-titulo" class="text-sm font-bold text-white">IAjudinha</p>
+                <p class="truncate text-xs text-secondary/90">Assistente virtual da Heaven Games</p>
             </div>
-            <button type="button" class="rounded-full p-1 text-secondary hover:text-white" data-acao="fechar-chat" aria-label="Fechar chat">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <button type="button" class="rounded-lg p-2 text-secondary transition hover:bg-white/10 hover:text-white"
+                data-acao="nova-conversa" aria-label="Começar uma nova conversa" title="Nova conversa">
+                <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" />
                 </svg>
             </button>
-        </div>
-        <div id="chat-mensagens" class="rolagem-fina flex-1 space-y-3 overflow-y-auto p-3" aria-live="polite"></div>
-        <form id="chat-form" class="flex border-t border-secondary/40 p-3">
-            <label for="chat-input" class="sr-only">Mensagem para a IAjudinha</label>
-            <input id="chat-input" type="text" autocomplete="off" maxlength="1000" placeholder="Digite sua mensagem..."
-                class="w-full rounded-l-lg border border-secondary/50 bg-dark-bg p-2 text-sm text-white focus:border-secondary focus:outline-none">
-            <button id="chat-enviar" type="submit" aria-label="Enviar mensagem"
-                class="rounded-r-lg bg-secondary px-3 text-primary transition hover:bg-white disabled:opacity-60">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M13 6l6 6-6 6" />
+            <button type="button" class="rounded-lg p-2 text-secondary transition hover:bg-white/10 hover:text-white"
+                data-acao="fechar-chat" aria-label="Fechar chat" title="Fechar">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 6 6 18" /><path d="m6 6 12 12" />
                 </svg>
             </button>
+        </header>
+        <div id="chat-mensagens" class="rolagem-fina flex-1 space-y-4 overflow-y-auto px-4 py-5" aria-live="polite"></div>
+        <form id="chat-form" class="border-t border-white/10 p-3">
+            <div class="flex items-end gap-2 rounded-xl bg-white/[0.04] p-1.5 ring-1 ring-white/10 transition focus-within:ring-secondary/60">
+                <label for="chat-input" class="sr-only">Mensagem para a IAjudinha</label>
+                <textarea id="chat-input" rows="1" autocomplete="off" maxlength="1000"
+                    placeholder="Digite sua pergunta…"
+                    class="rolagem-fina max-h-32 flex-1 resize-none bg-transparent px-2 py-2 text-sm text-white placeholder-gray-500 focus:outline-none"></textarea>
+                <button id="chat-enviar" type="submit" aria-label="Enviar mensagem"
+                    class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-secondary text-primary transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-50">
+                    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m5 12 7-7 7 7" /><path d="M12 19V5" />
+                    </svg>
+                </button>
+            </div>
+            <p class="mt-2 px-1 text-[11px] leading-snug text-gray-500">
+                A IAjudinha pode errar. Para cobranças ou problemas na conta, digite <span class="text-secondary">"abrir chamado"</span>.
+            </p>
         </form>
-    </div>
+    </section>
 
     <!-- Modal: login do cliente -->
     <div id="modal-login" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="titulo-login">
@@ -404,7 +621,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <h2 id="titulo-login" class="mb-6 text-center text-2xl font-bold text-white">Entrar na Heaven Games</h2>
+            <h2 id="titulo-login" class="mb-1 text-center text-2xl font-bold text-white">Entrar na Heaven Games</h2>
+            <p class="mb-6 text-center text-sm text-gray-400">Acompanhe seus chamados e fale com a equipe.</p>
             <form id="form-login" class="space-y-4">
                 <div>
                     <label for="login-email" class="rotulo">E-mail</label>
@@ -440,7 +658,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <h2 id="titulo-cadastro" class="mb-6 text-center text-2xl font-bold text-white">Criar conta</h2>
+            <h2 id="titulo-cadastro" class="mb-1 text-center text-2xl font-bold text-white">Criar conta</h2>
+            <p class="mb-6 text-center text-sm text-gray-400">Leva menos de um minuto.</p>
             <form id="form-cadastro" class="space-y-4">
                 <div>
                     <label for="cadastro-nome" class="rotulo">Nome completo</label>
@@ -489,7 +708,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
-            <p class="text-center text-sm font-semibold uppercase tracking-widest text-secondary">Acesso restrito</p>
+            <p class="text-center text-xs font-semibold uppercase tracking-[0.2em] text-ia">Acesso restrito</p>
             <h2 id="titulo-funcionario" class="mb-6 mt-1 text-center text-2xl font-bold text-white">Login de funcionários</h2>
             <form id="form-funcionario" class="space-y-4">
                 <div>

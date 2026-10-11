@@ -26,6 +26,7 @@ services:
       ConnectionStrings__DefaultConnection: "Server=db;Database=IAjudinhaDB;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=True"
       Jwt__Key: ${JWT_KEY:?Defina JWT_KEY no arquivo .env}
       Gemini__ApiKey: ${GEMINI_API_KEY:-}
+      Gemini__Modelo: ${GEMINI_MODELO:-gemini-flash-lite-latest}
     ports:
       - "8080:8080"
 

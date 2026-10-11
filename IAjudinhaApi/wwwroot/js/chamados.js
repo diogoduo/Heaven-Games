@@ -2,7 +2,7 @@ import { api } from './api.js';
 import { ehCliente, ehFuncionario, usuarioAtual } from './sessao.js';
 import {
     $, mostrar, abrirModal, configurarFormulario, registrarAcoes, toast, paginaAtual,
-    escapeHtml, formatarData, tempoRelativo, badgeStatus, primeiroNome, htmlCarregando, htmlErro,
+    escapeHtml, formatarData, tempoRelativo, badgeStatus, primeiroNome, htmlCarregando, htmlErro, icone,
 } from './ui.js';
 
 // Chamado exibido no modal de detalhes.
@@ -83,13 +83,16 @@ export async function carregarMeusChamados() {
 function cartaoChamado(c) {
     return `
         <button type="button" data-acao="abrir-chamado" data-id="${c.idChamado}"
-            class="cartao flex w-full flex-col gap-2 p-4 text-left transition hover:ring-secondary/40 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-                <p class="text-xs font-mono text-secondary/70">#${c.idChamado}</p>
-                <p class="font-semibold text-white">${escapeHtml(c.assunto)}</p>
-                <p class="text-xs text-gray-400">Atualizado ${tempoRelativo(c.dataAtualizacao)}${c.nomeResponsavel ? ` · Atendido por ${escapeHtml(c.nomeResponsavel)}` : ''}</p>
+            class="cartao group flex w-full items-center gap-4 p-4 text-left transition hover:ring-secondary/40 sm:p-5">
+            <div class="min-w-0 flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-mono text-xs text-secondary/70">#${c.idChamado}</span>
+                    ${badgeStatus(c.status)}
+                </div>
+                <p class="mt-1.5 font-semibold text-white">${escapeHtml(c.assunto)}</p>
+                <p class="mt-0.5 text-xs text-gray-400">Atualizado ${tempoRelativo(c.dataAtualizacao)}${c.nomeResponsavel ? ` · Atendido por ${escapeHtml(c.nomeResponsavel)}` : ''}</p>
             </div>
-            ${badgeStatus(c.status)}
+            ${icone('seta', 'h-5 w-5 shrink-0 text-gray-500 transition group-hover:translate-x-0.5 group-hover:text-white')}
         </button>`;
 }
 
@@ -150,7 +153,7 @@ function bolhaMensagem(m, visaoEquipe) {
     const minha = daEquipe === visaoEquipe;
     return `
         <div class="flex ${minha ? 'justify-end' : 'justify-start'}">
-            <div class="max-w-[85%] rounded-xl px-4 py-3 text-sm ${minha ? 'bg-primary text-white' : 'bg-white/5 text-gray-200'}">
+            <div class="max-w-[85%] rounded-2xl px-4 py-3 text-sm ring-1 ${minha ? 'rounded-br-md bg-primary text-white ring-white/10' : 'rounded-bl-md bg-white/[0.06] text-gray-200 ring-white/[0.04]'}">
                 <p class="mb-1 text-xs font-semibold ${daEquipe ? 'text-sky-300' : 'text-secondary'}">
                     ${escapeHtml(m.nomeAutor)}${daEquipe ? ' · Equipe Heaven Games' : ''}
                 </p>

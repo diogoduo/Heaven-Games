@@ -8,14 +8,14 @@ Loja de jogos fictícia com uma central de suporte completa: a **IAjudinha**, um
 
 ## Funcionalidades
 
-- **Catálogo** com destaques e filtro por categoria, carregado da API.
-- **IAjudinha (chat com IA):** responde dúvidas usando o catálogo real da loja como contexto e abre chamados pela própria conversa (pedindo login quando necessário e continuando o fluxo depois).
+- **Catálogo** com destaques, filtro por categoria, busca e ordenação por preço ou nome, carregado da API.
+- **IAjudinha (chat com IA):** responde em cerca de 1 segundo usando o catálogo real da loja como contexto, lembra do que foi dito na conversa e abre chamados pelo próprio chat (pedindo login quando necessário e continuando o fluxo depois).
 - **Contas de cliente:** cadastro com validação, login e sessão com JWT.
 - **Meus chamados:** lista com status e histórico de mensagens, em formato de conversa com a equipe.
 - **Painel de atendimento (equipe):** fila priorizada, indicadores por status, busca, resposta ao cliente e mudança de status. A primeira resposta já atribui o responsável e coloca o chamado "Em andamento".
 - **API REST documentada** com OpenAPI + Scalar.
 
-| Chat abrindo um chamado | Painel de atendimento |
+| Conversa com a IAjudinha | Painel de atendimento |
 | --- | --- |
 | ![Chat](docs/img/chat.png) | ![Painel](docs/img/painel.png) |
 
@@ -75,7 +75,7 @@ Elas são criadas na primeira execução junto com alguns chamados de exemplo. P
 1. Gere uma chave gratuita em [Google AI Studio](https://aistudio.google.com/apikey).
 2. Docker: preencha `GEMINI_API_KEY` no `.env` e rode `docker compose up -d` de novo. Com `dotnet run`: use o `user-secrets` mostrado acima.
 
-Sem a chave, o chat continua abrindo chamados e avisa que as respostas com IA estão desativadas. O modelo pode ser trocado em `Gemini:Modelo` (padrão `gemini-flash-latest`), e `Gemini:UsarBuscaGoogle` permite que a IA consulte a web.
+Sem a chave, o chat continua abrindo chamados e avisa que as respostas com IA estão desativadas. O modelo pode ser trocado em `Gemini:Modelo` (no Docker, pela variável `GEMINI_MODELO` do `.env`). O padrão é `gemini-flash-lite-latest`, que responde em cerca de 1 segundo; o `gemini-flash-latest` é mais capaz, mas chegou a levar mais de 30 segundos e a recusar pedidos por sobrecarga. `Gemini:NivelRaciocinio` (padrão `low`) limita quanto o modelo "pensa" antes de responder, e `Gemini:UsarBuscaGoogle` permite que a IA consulte a web.
 
 ## Endpoints
 
@@ -122,6 +122,7 @@ O arquivo [`IAjudinhaApi.http`](IAjudinhaApi/IAjudinhaApi.http) traz exemplos pr
 - **Limite de requisições por IP** no login e no cadastro (10/min) e no chat (15/min), para dificultar ataques de força bruta e proteger a cota da IA.
 - **Front-end servido pela própria API:** um único deploy, sem necessidade de CORS.
 - **Contexto da IA vindo do banco:** o catálogo é injetado nas instruções do modelo, então a IAjudinha responde com jogos e preços reais e não inventa produtos.
+- **IA rápida e resiliente:** modelo Flash-Lite com raciocínio limitado (respostas em ~1 s) e uma nova tentativa automática quando o Gemini responde 500/503 por sobrecarga.
 - **Datas em UTC** no banco, convertidas para o fuso do navegador na exibição.
 - **Erros padronizados** em `ProblemDetails`, com mensagens de validação em português.
 

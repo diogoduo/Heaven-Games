@@ -112,7 +112,7 @@ export function configurarFormulario(seletor, aoEnviar) {
 export function toast(mensagem, tipo = 'sucesso') {
     const elemento = document.createElement('div');
     elemento.setAttribute('role', tipo === 'erro' ? 'alert' : 'status');
-    elemento.className = `toast pointer-events-auto rounded-lg px-4 py-3 text-sm shadow-xl ring-1 ${tipo === 'erro'
+    elemento.className = `toast pointer-events-auto rounded-xl px-4 py-3 text-sm shadow-xl ring-1 ${tipo === 'erro'
         ? 'bg-red-950 text-red-100 ring-red-500/40'
         : 'bg-card-bg text-white ring-secondary/40'}`;
     elemento.textContent = mensagem;
@@ -150,6 +150,20 @@ const formatoMoeda = new Intl.NumberFormat('pt-BR', { style: 'currency', currenc
 export const formatarPreco = (preco) => (preco == null ? 'Grátis para jogar' : formatoMoeda.format(preco));
 
 export const primeiroNome = (nome) => String(nome ?? '').trim().split(/\s+/)[0];
+
+// Remove acentos e caixa para buscas: "Simulação" -> "simulacao"
+export const normalizar = (texto) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+
+// ---------------------------------------------------------------
+// Ícones (traços do Lucide) usados nos trechos renderizados pelo JS
+// ---------------------------------------------------------------
+const ICONES = {
+    brilho: '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"/>',
+    seta: '<path d="m9 18 6-6-6-6"/>',
+};
+
+export const icone = (nome, classes = 'h-5 w-5') =>
+    `<svg class="${classes}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONES[nome]}</svg>`;
 
 export const STATUS = {
     Aberto: { rotulo: 'Aberto', classes: 'bg-amber-400/15 text-amber-300 ring-amber-400/30' },

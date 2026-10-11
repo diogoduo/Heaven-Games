@@ -1,5 +1,5 @@
 import { api } from './api.js';
-import { $, paginaAtual, escapeHtml, formatarData, tempoRelativo, badgeStatus, htmlCarregando, htmlErro } from './ui.js';
+import { $, paginaAtual, escapeHtml, formatarData, tempoRelativo, badgeStatus, htmlCarregando, htmlErro, normalizar } from './ui.js';
 
 // Fila de atendimento: chamados abertos primeiro, depois os mais recentes.
 const PRIORIDADE = { Aberto: 0, EmAndamento: 1, Resolvido: 2 };
@@ -30,15 +30,17 @@ export async function carregarPainel() {
 function renderizarResumo() {
     const contar = (status) => chamados.filter((c) => c.status === status).length;
     const cartoes = [
-        ['Abertos', contar('Aberto'), 'text-amber-300'],
-        ['Em andamento', contar('EmAndamento'), 'text-sky-300'],
-        ['Resolvidos', contar('Resolvido'), 'text-emerald-300'],
-        ['Total', chamados.length, 'text-white'],
+        ['Abertos', contar('Aberto'), 'text-amber-300', 'bg-amber-400'],
+        ['Em andamento', contar('EmAndamento'), 'text-sky-300', 'bg-sky-400'],
+        ['Resolvidos', contar('Resolvido'), 'text-emerald-300', 'bg-emerald-400'],
+        ['Total', chamados.length, 'text-white', 'bg-secondary'],
     ];
-    $('#painel-resumo').innerHTML = cartoes.map(([rotulo, valor, cor]) => `
-        <div class="cartao p-4">
-            <p class="text-sm text-gray-400">${rotulo}</p>
-            <p class="mt-1 text-3xl font-bold ${cor}">${valor}</p>
+    $('#painel-resumo').innerHTML = cartoes.map(([rotulo, valor, cor, marcador]) => `
+        <div class="cartao p-5">
+            <p class="flex items-center gap-2 text-sm text-gray-400">
+                <span class="h-2 w-2 rounded-full ${marcador}" aria-hidden="true"></span>${rotulo}
+            </p>
+            <p class="mt-2 text-3xl font-bold ${cor}">${valor}</p>
         </div>`).join('');
 }
 
@@ -87,5 +89,3 @@ function linhaChamado(c) {
             <td class="px-4 py-3 text-gray-400" title="${formatarData(c.dataAtualizacao)}">${tempoRelativo(c.dataAtualizacao)}</td>
         </tr>`;
 }
-
-const normalizar = (texto) => texto.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
